@@ -1,0 +1,14 @@
+{
+  "name": "cognito-pre-token-generation-lambda",
+  "version": "1.0.0",
+  "description": "Cognito Pre Token Generation Lambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "kevin.llps",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}

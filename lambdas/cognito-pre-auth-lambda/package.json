@@ -1,0 +1,14 @@
+{
+  "name": "cognito-pre-auth-lambda",
+  "version": "1.0.0",
+  "description": "Cognito Pre Auth Lambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "kevin.llps",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
