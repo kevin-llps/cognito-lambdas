@@ -6,6 +6,8 @@ exports.handler = (event, context, callback) => {
     console.log("event = ", event);
     console.log("context = ", context);
 
+    context.callbackWaitsForEmptyEventLoop = false;
+
     const username = event.userName;
 
     const connection = db.connection();
