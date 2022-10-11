@@ -1,4 +1,20 @@
 {
+    "version": "1",
+    "region": "eu-west-3",
+    "userPoolId": "eu-west-3_sdfidsf",
     "userName": "kevin.llps",
+    "callerContext": {
+      "awsSdkVersion": "aws-sdk-unknown-unknown",
+      "clientId": "clientId"
+    },
+    "triggerSource": "PreAuthentication_Authentication",
+    "request": {
+      "userAttributes": {
+        "sub": "12a55673-5ce7-4c04-abca-68651e62fd5f",
+        "cognito:user_status": "CONFIRMED"
+      },
+      "validationData": null,
+      "userNotFound": false
+    },
     "response": {}
 }

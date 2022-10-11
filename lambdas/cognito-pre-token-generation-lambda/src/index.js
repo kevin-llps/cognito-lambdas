@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 exports.handler = (event, context, callback) => {
 
+    console.log("Pre Token");
     console.log("event = ", event);
     console.log("context = ", context);
 
