@@ -1,6 +1,23 @@
 {
-    "request": {
-        "userAttributes": {"email": "kevin.llps@gmail.com"}
+    "version": "1",
+    "triggerSource": "TokenGeneration_Authentication",
+    "region": "eu-west-3",
+    "userPoolId": "eu-west-3_gsdgggrre",
+    "userName": "kevin.llps",
+    "callerContext": {
+        "awsSdkVersion": "aws-sdk-unknown-unknown",
+        "clientId": "clientId"
     },
-    "response": {}
+    "request": {
+        "userAttributes": {
+        "sub": "12a55673-5ce7-4c04-abca-68651e62fd5f",
+        "cognito:user_status": "CONFIRMED"
+        },
+        "groupConfiguration": {
+            "groupsToOverride": [],
+            "iamRolesToOverride": [],
+            "preferredRole": null
+        }
+    },
+    "response": { "claimsOverrideDetails": null }
 }

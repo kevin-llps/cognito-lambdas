@@ -1,6 +1,19 @@
 {
+    "version": "1",
+    "region": "eu-west-3",
+    "userPoolId": "eu-west-3_fdsfkdsf",
+    "userName": "kevin.llps",
+    "callerContext": {
+      "awsSdkVersion": "aws-sdk-unknown-unknown",
+      "clientId": "clientId"
+    },
+    "triggerSource": "PostAuthentication_Authentication",
     "request": {
-        "userAttributes": {"email": "kevin.llps@gmail.com"}
+      "userAttributes": {
+        "sub": "12a55673-5ce7-4c04-abca-68651e62fd5f",
+        "cognito:user_status": "CONFIRMED"
+      },
+      "newDeviceUsed": false
     },
     "response": {}
 }

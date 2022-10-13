@@ -1,9 +1,10 @@
 const mysql = require('mysql2');
+let connection;
 
 const db = {
 
     connection() {
-        return mysql.createConnection({
+        connection = mysql.createConnection({
             host: process.env.RDS_HOSTNAME,
             user: process.env.RDS_USERNAME,
             password: process.env.RDS_PASSWORD,
@@ -12,15 +13,8 @@ const db = {
         });
     },
 
-    verifySpeakerUsername(connection, username) {
-        connection.query("SELECT * FROM speakers WHERE username = ?", [username], (err, results, fields) => {
-            if (err) {
-                throw err;
-            }
-            if(results.length === 0) {
-                throw new Error("Authentication failed");
-            } 
-        });
+    query(sqlQuery, params, processErrOrResults) {
+        connection.query(sqlQuery, params, processErrOrResults);
     }
 
 };
