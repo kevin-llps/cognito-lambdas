@@ -1,7 +1,10 @@
+const secretManager = require('@aws-sdk/client-secrets-manager');
 const db = require('./db');
 
 const selectSpeakerByUsername = "SELECT * FROM speaker WHERE username = ?";
 const userIsNotSpeakerErrorMessage = "User must be a speaker in order to be authenticated";
+
+const secretManagerClient = new secretManager.SecretsManagerClient({ region: process.env.REGION });
 
 exports.handler = (event, context, callback) => {
 
@@ -18,14 +21,23 @@ exports.handler = (event, context, callback) => {
 
     const username = event.userName;
 
-    db.connection();
-    db.query(selectSpeakerByUsername, [username], (err, results) => {
-        if (err) {
-            return callback(err);
-        }
-        if(results.length === 0) {
-            return callback(new Error(userIsNotSpeakerErrorMessage));
-        }
-        callback(null, event); 
+    const getSecretValueCommand = new secretManager.GetSecretValueCommand({ SecretId: process.env.SECRET_NAME });
+
+    secretManagerClient.send(getSecretValueCommand).then(secretResponse => {
+        const dbSecret = secretResponse.SecretString;
+
+        db.connection(dbSecret);
+        db.query(selectSpeakerByUsername, [username], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            if(results.length === 0) {
+                return callback(new Error(userIsNotSpeakerErrorMessage));
+            }
+            callback(null, event); 
+        });
+    }, err => {
+        console.log(err);
+        return callback(err);
     });
 };
