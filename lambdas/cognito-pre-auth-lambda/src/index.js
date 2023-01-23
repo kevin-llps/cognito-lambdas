@@ -1,12 +1,12 @@
-const secretManager = require('@aws-sdk/client-secrets-manager');
-const db = require('./db');
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+import { connection, query } from "./db.js";
 
 const selectSpeakerByUsername = "SELECT * FROM speaker WHERE username = ?";
 const userIsNotSpeakerErrorMessage = "User must be a speaker in order to be authenticated";
 
-const secretManagerClient = new secretManager.SecretsManagerClient({ region: process.env.REGION });
+const secretManagerClient = new SecretsManagerClient({ region: process.env.REGION });
 
-exports.handler = (event, context, callback) => {
+export const handler = (event, context, callback) => {
 
     console.log("Pre Auth");
     console.log("event = ", event);
@@ -21,13 +21,13 @@ exports.handler = (event, context, callback) => {
 
     const username = event.userName;
 
-    const getSecretValueCommand = new secretManager.GetSecretValueCommand({ SecretId: process.env.SECRET_NAME });
+    const getSecretValueCommand = new GetSecretValueCommand({ SecretId: process.env.SECRET_NAME });
 
     secretManagerClient.send(getSecretValueCommand).then(secretResponse => {
         const dbSecret = secretResponse.SecretString;
 
-        db.connection(dbSecret);
-        db.query(selectSpeakerByUsername, [username], (err, results) => {
+        connection(dbSecret);
+        query(selectSpeakerByUsername, [username], (err, results) => {
             if (err) {
                 return callback(err);
             }
