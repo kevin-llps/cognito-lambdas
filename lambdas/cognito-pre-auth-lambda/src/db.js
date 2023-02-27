@@ -4,11 +4,11 @@ let dbConnection;
 
 export const connection = (dbSecret) =>  {
     dbConnection = mysql.createConnection({
-        host: dbSecret.hostname,
-        user: dbSecret.username,
+        host: dbSecret.host,
+        user: dbSecret.user,
         password: dbSecret.password,
         port: dbSecret.port,
-        database: dbSecret.dbname
+        database: dbSecret.database
     });
 };
 
