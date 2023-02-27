@@ -14,12 +14,15 @@ const expectedSqlQuery = "SELECT * FROM speaker WHERE username = ?";
 const params = ["kevin.llps"];
 const results = [{ id: 1, username: 'kevin.llps' }];
 const expectedErrorMessage = "User must be a speaker in order to be authenticated";
-const secretResponse = { SecretString: {
+
+const secretJsonResponse = { SecretString: '{"host": "host", "user": "user", "password":"password", "port": "port", "database": "database"}'};
+
+const expectedSecretResponse = { SecretString: {
     host: "host",
-    user: "username",
+    user: "user",
     password:"password",
     port: "port",
-    dbname: "dbname"
+    database: "database"
 }};
 
 describe('Handler', () => {
@@ -37,13 +40,13 @@ describe('Handler', () => {
 
         mockedSecretManagerClient.on(GetSecretValueCommand, {
             SecretId: process.env.SECRET_NAME
-        }).resolves(secretResponse);
+        }).resolves(secretJsonResponse);
 
         await handler(event, context, callback);
 
         expect(context.callbackWaitsForEmptyEventLoop).toBeFalsy();
         expect(mockedSecretManagerClient).toHaveReceivedCommandTimes(GetSecretValueCommand, 1);
-        expect(connection).toBeCalledWith(secretResponse.SecretString);
+        expect(connection).toBeCalledWith(expectedSecretResponse.SecretString);
         expect(query).toBeCalledWith(expectedSqlQuery, params, expect.any(Function));
         expect(callback).toBeCalledWith(null, event);
     });
@@ -59,13 +62,13 @@ describe('Handler', () => {
 
         mockedSecretManagerClient.on(GetSecretValueCommand, {
             SecretId: process.env.SECRET_NAME
-        }).resolves(secretResponse);
+        }).resolves(secretJsonResponse);
 
         await handler(event, context, callback);
 
         expect(context.callbackWaitsForEmptyEventLoop).toBeFalsy();
         expect(mockedSecretManagerClient).toHaveReceivedCommandTimes(GetSecretValueCommand, 1);
-        expect(connection).toBeCalledWith(secretResponse.SecretString);
+        expect(connection).toBeCalledWith(expectedSecretResponse.SecretString);
         expect(query).toBeCalledWith(expectedSqlQuery, params, expect.any(Function));
         expect(callback).toBeCalledWith(expectedError);
     });
@@ -81,13 +84,13 @@ describe('Handler', () => {
 
         mockedSecretManagerClient.on(GetSecretValueCommand, {
             SecretId: process.env.SECRET_NAME
-        }).resolves(secretResponse);
+        }).resolves(secretJsonResponse);
 
         await handler(event, context, callback);
 
         expect(context.callbackWaitsForEmptyEventLoop).toBeFalsy();
         expect(mockedSecretManagerClient).toHaveReceivedCommandTimes(GetSecretValueCommand, 1);
-        expect(connection).toBeCalledWith(secretResponse.SecretString);
+        expect(connection).toBeCalledWith(expectedSecretResponse.SecretString);
         expect(query).toBeCalledWith(expectedSqlQuery, params, expect.any(Function));
         expect(callback).toBeCalledWith(expectedError);
     });
