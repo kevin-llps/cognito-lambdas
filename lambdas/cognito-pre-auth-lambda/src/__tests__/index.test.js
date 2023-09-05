@@ -15,14 +15,15 @@ const params = ["kevin.llps"];
 const results = [{ id: 1, username: 'kevin.llps' }];
 const expectedErrorMessage = "User must be a speaker in order to be authenticated";
 
-const secretJsonResponse = { SecretString: '{"host": "host", "user": "user", "password":"password", "port": "port", "database": "database"}'};
+const secretJsonResponse = { SecretString: '{"host": "host", "username": "user", "password":"password", "port": "port", "dbname": "database", "engine": "mysql" }'};
 
 const expectedSecretResponse = { SecretString: {
     host: "host",
-    user: "user",
+    username: "user",
     password:"password",
     port: "port",
-    database: "database"
+    dbname: "database",
+    engine: "mysql"
 }};
 
 describe('Handler', () => {
@@ -33,7 +34,7 @@ describe('Handler', () => {
     it('given event should run handler successfully', async () => {
         const event = JSON.parse(eventRequest);
         const context = { callbackWaitsForEmptyEventLoop : true };
-        
+
         const connection = jest.spyOn(db, 'connection').mockImplementation((secret) => jest.fn());
         const query = jest.spyOn(db, 'query').mockImplementation((sqlQuery, params, processErrOrResults) => processErrOrResults(null, results));
         const callback = jest.fn((err, event) => event);
@@ -55,7 +56,7 @@ describe('Handler', () => {
         const event = JSON.parse(eventRequest);
         const context = { callbackWaitsForEmptyEventLoop : true };
         const expectedError = new Error("Timeout");
-        
+
         const connection = jest.spyOn(db, 'connection').mockImplementation((secret) => jest.fn());
         const query = jest.spyOn(db, 'query').mockImplementation((sqlQuery, params, processErrOrResults) => processErrOrResults(expectedError));
         const callback = jest.fn((err) => err);
@@ -73,11 +74,11 @@ describe('Handler', () => {
         expect(callback).toBeCalledWith(expectedError);
     });
 
-    it('should pass error to lambda callback when user is not a speaker', async () => {        
+    it('should pass error to lambda callback when user is not a speaker', async () => {
         const event = JSON.parse(eventRequest);
         const context = { callbackWaitsForEmptyEventLoop : true };
         const expectedError = new Error(expectedErrorMessage);
-        
+
         const connection = jest.spyOn(db, 'connection').mockImplementation((secret) => jest.fn());
         const query = jest.spyOn(db, 'query').mockImplementation((sqlQuery, params, processErrOrResults) => processErrOrResults(null, []));
         const callback = jest.fn((err) => err);

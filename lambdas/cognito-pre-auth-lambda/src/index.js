@@ -34,7 +34,7 @@ export const handler = (event, context, callback) => {
             if(results.length === 0) {
                 return callback(new Error(userIsNotSpeakerErrorMessage));
             }
-            callback(null, event); 
+            callback(null, event);
         });
     }, err => {
         console.log(err);
